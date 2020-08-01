@@ -1,0 +1,21 @@
+node {
+    stage('Test') {
+        sh "echo 'Test'"
+    }
+
+    stage('Build Docker Image') {
+        sh "echo 'Build Docker Image'"
+    }
+
+    stage('Save Image') {
+        sh "echo 'Save Image'"
+    }
+
+    stage('Load Image') {
+        sh "echo 'Load Image'"
+    }
+
+    stage('Start Image') {
+        sh "echo 'Start Image'"
+    }
+}
