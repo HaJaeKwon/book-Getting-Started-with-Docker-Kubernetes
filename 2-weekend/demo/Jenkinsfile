@@ -1,5 +1,5 @@
 node {
-    statge('Git Checkout') {
+    stage('Git Checkout') {
         git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
     }
 
