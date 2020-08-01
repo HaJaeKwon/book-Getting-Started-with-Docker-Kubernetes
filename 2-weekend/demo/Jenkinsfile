@@ -1,21 +1,28 @@
 node {
-    stage('Test') {
-        sh './gradlew test'
+    statge('Git Checkout') {
+        git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
     }
 
-    stage('Build Image') {
-        sh 'docker build -t 2-weekend-demo'
+    dir('2-weekend/demo/') {
+        stage('Test') {
+            sh './gradlew test'
+        }
+
+        stage('Build Image') {
+            sh 'docker build -t 2-weekend-demo'
+        }
+
+        stage('Save Image') {
+            sh "echo 'Save Image'"
+        }
+
+        stage('Load Image') {
+            sh "echo 'Load Image'"
+        }
+
+        stage('Start Image') {
+            sh 'docker run -p 9090:9090 2-weekend-demo'
+        }
     }
 
-    stage('Save Image') {
-        sh "echo 'Save Image'"
-    }
-
-    stage('Load Image') {
-        sh "echo 'Load Image'"
-    }
-
-    stage('Start Image') {
-        sh 'docker run -p 9090:9090 2-weekend-demo'
-    }
 }
