@@ -9,7 +9,7 @@ node {
         }
 
         stage('Build Image') {
-            sh 'docker build -t 2-weekend-demo'
+            sh 'docker build -t 2-weekend-demo:latest .'
         }
 
         stage('Save Image') {
