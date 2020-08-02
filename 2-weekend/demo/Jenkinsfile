@@ -1,28 +1,41 @@
-node {
+pipeline {
+    agent none
+    options { skipDefaultCheckout(true) }
     stage('Git Checkout') {
         git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
     }
 
     dir('2-weekend/demo/') {
-        stage('Test') {
-            sh './gradlew test'
+        stage('Test And Build') {
+            agent any
+            steps {
+                sh './gradlew test'
+            }
+            steps {
+                sh './gradlew clean assemble'
+            }
         }
 
         stage('Build Image') {
-            sh 'docker build -t 2-weekend-demo:latest .'
+            agent any
+            steps {
+                sh 'docker build -t 2-weekend-demo:latest .'
+            }
         }
 
         stage('Save Image') {
+            agent any
             sh "echo 'Save Image'"
         }
 
         stage('Load Image') {
+            agent any
             sh "echo 'Load Image'"
         }
 
         stage('Start Image') {
+            agent any
             sh 'docker run -p 9090:9090 2-weekend-demo'
         }
     }
-
 }

@@ -2,7 +2,7 @@ FROM java:8
 
 EXPOSE 9090
 
-ARG JAR_FILE=/var/lib/jenkins/workspace/2-weekend-demo/2-weekend/demo/build/libs/demo.jar
+ARG JAR_FILE=./build/libs/demo.jar
 
 ADD ${JAR_FILE} demo.jar
 
