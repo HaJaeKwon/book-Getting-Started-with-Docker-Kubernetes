@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "centos/7"
+  config.vm.box_check_update = true
+
+  config.vm.define "kube-master1" do |master|
+    master.vm.hostname = "kube-master1"
+    master.vm.network "private_network", ip: "192.168.100.100"
+    master.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 2
+    end
+  end
+  config.vm.define "kube-worker1" do |worker|
+    worker.vm.hostname = "kube-worker1"
+    worker.vm.network "private_network", ip: "192.168.100.101"
+    worker.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 2
+    end
+  end
+  config.vm.define "kube-worker2" do |worker|
+    worker.vm.hostname = "kube-worker2"
+    worker.vm.network "private_network", ip: "192.168.100.102"
+    worker.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 2
+    end
+  end
+  config.vm.define "kube-worker3" do |worker|
+    worker.vm.hostname = "kube-worker3"
+    worker.vm.network "private_network", ip: "192.168.100.103"
+    worker.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 2
+    end
+  end
+end
+

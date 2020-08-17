@@ -3,7 +3,10 @@ pipeline {
     options { skipDefaultCheckout(true) }
     stages {
         stage('Git Checkout') {
-            git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
+            agent any
+            steps {
+                git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
+            }
         }
 
         dir('2-weekend/demo/') {
