@@ -44,6 +44,6 @@ end
 
 * centos7 기반의 linux 머신
 * port
-  * 8080: jenkins, 9090: spring boot application, 3306: mysql
+  * 9090: jenkins, 9091: spring boot application, 9092: mysql
 * docker 커맨드 사용을 위해 docker provision 단계를 추가
 
