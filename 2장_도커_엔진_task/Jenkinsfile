@@ -3,12 +3,22 @@ node {
         git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
     }
 
-    stage('Test') {
-        sh 'cd 2장_도커_엔진_task'
-        sh './gradlew test'
+    dir('2장_도커_엔진_task') {
+        stage('Test') {
+            sh './gradlew test'
+        }
+        stage('Build') {
+            sh './gradlew clean assemble'
+            sh 'cp ./build/libs/demo.jar ./'
+        }
     }
-
-    stage('Build') {
-        sh './gradlew clean assemble'
+    stage('Build Image') {
+        app = docker.build("hazxz/2-weekend", "./2장_도커_엔진_task")
+    }
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
+            app.push("${env.BUILD_ID}")
+            app.push("latest")
+        }
     }
 }
