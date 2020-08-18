@@ -4,4 +4,4 @@
   hosts: all
   roles:
     - common
-    - install-jenkins
+    - start-jenkins
