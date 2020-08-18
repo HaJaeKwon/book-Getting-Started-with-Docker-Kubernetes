@@ -9,7 +9,7 @@ pipeline {
             }
         }
 
-        dir('2-weekend/demo/') {
+        dir('/2장\ 도커\ 엔진\ task/') {
             stage('Test And Build') {
                 agent any
                 steps {
@@ -23,7 +23,7 @@ pipeline {
             stage('Build Image') {
                 agent any
                 steps {
-                    sh 'docker build -t 2-weekend-demo:latest .'
+                    sh 'docker build -t 2-chapter-demo:latest .'
                 }
             }
 
@@ -39,7 +39,7 @@ pipeline {
 
             stage('Start Image') {
                 agent any
-                sh 'docker run -p 9090:9090 2-weekend-demo'
+                sh 'docker run -p 9090:9090 2-chapter-demo'
             }
         }
     }

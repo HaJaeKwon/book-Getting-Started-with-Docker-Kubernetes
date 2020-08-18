@@ -1,0 +1,30 @@
+---
+
+- name: download jenkins.war file
+  get_url:
+    url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+    dest: /home/vagrant/jenkins.war
+    timeout: 1000
+
+- name: Create nohup script
+  template:
+    src: start_jenkins.sh.j2
+    dest: /home/vagrant/start_jenkins.sh
+    mode: 0755
+
+- name: start jenkins.war
+  command: sh start_jenkins.sh
+  args:
+    chdir: /home/vagrant
+
+- name: Register var of jenkins initialAdminPassword
+  shell:
+    cmd: cat /home/vagrant/.jenkins/secrets/initialAdminPassword
+  register: initialAdminPassword_result
+  ignore_errors: yes
+  become: yes
+
+- name: Print initialAdminPassword
+  debug:
+    msg: init password is {{ initialAdminPassword_result }}
+  when: initialAdminPassword_result is defined

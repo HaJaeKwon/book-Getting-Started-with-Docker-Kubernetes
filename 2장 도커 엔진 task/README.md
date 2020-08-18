@@ -1,3 +1,18 @@
+# 2장 도커 엔진 task
+
+
+
+### 실습 목표
+
+* Vagrant 가상 환경에서 Jenkins 를 설치, 구동한다.
+* Jenkins pipeline 기능 (Jenkinsfile) 을 이용하여 Spring 어플리케이션을 배포한다.
+* 배포 시에는 Dockerfile 을 이용하여 docker image 를 생성 한 뒤 image 기반의 컨테이너를 띄우는 방식으로 구성한다.
+
+
+
+#### Vagrant 가상 환경에서 Jenkins 를 설치, 구동한다.
+
+```shell
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -24,3 +39,11 @@ Vagrant.configure("2") do |config|
 	config.vm.provision :docker,
 		images: ["ubuntu:14.04"]
 end
+
+```
+
+* centos7 기반의 linux 머신
+* port
+  * 8080: jenkins, 9090: spring boot application, 3306: mysql
+* docker 커맨드 사용을 위해 docker provision 단계를 추가
+

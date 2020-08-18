@@ -1,0 +1,7 @@
+---
+
+- name: provision for jenkins
+  hosts: all
+  roles:
+    - common
+    - install-jenkins
