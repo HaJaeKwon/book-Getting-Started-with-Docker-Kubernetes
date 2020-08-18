@@ -1,0 +1,14 @@
+node {
+    stage('Clone repository') {
+        git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
+    }
+
+    stage('Test') {
+        sh 'cd 2장_도커_엔진_task'
+        sh './gradlew test'
+    }
+
+    stage('Build') {
+        sh './gradlew clean assemble'
+    }
+}
