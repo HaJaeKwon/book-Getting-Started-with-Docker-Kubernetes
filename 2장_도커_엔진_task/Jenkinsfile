@@ -7,18 +7,33 @@ node {
         stage('Test') {
             sh './gradlew test'
         }
+
         stage('Build') {
             sh './gradlew clean assemble'
             sh 'cp ./build/libs/demo.jar ./'
         }
     }
+
     stage('Build Image') {
         app = docker.build("hazxz/2-weekend", "./2장_도커_엔진_task")
     }
+
     stage('Push image') {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
             app.push("${env.BUILD_ID}")
             app.push("latest")
         }
+    }
+
+    stage('Stop container') {
+        try {
+            sh 'docker stop 2-weekend-demo; docker rm 2-weekend-demo'
+        } catch (Exception e) {
+            echo 'container is not running'
+        }
+    }
+
+    stage('Start container') {
+        sh 'docker run -d --name 2-weekend-demo -p 9091:9091 --restart=always hazxz/2-weekend:latest'
     }
 }
