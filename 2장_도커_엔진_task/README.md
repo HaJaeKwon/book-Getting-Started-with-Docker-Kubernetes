@@ -54,12 +54,92 @@ vagrant up
 
 #### Jenkins pipeline 기능 (Jenkinsfile) 을 이용하여 Spring 어플리케이션을 배포한다.
 
-1. git checkout
-2. test
-3. build
-4. docker build
+1. Clone repository
+2. Test
+   1. ./gradlew test
+3. Build
+   1. ./gradlew clean assemble
+   2. move jar
+4. Build Image
    1. jar 파일 복사해오는 과정 포함
-5. save image
-6. stop ex-container
-7. start new-container
+5. Push Image
+6. stop container
+7. start container
 
+
+
+##### Jenkinsfile
+
+```groovy
+node {
+    stage('Clone repository') {
+        git 'https://github.com/HaJaeKwon/book-Getting-Started-with-Docker-Kubernetes.git'
+    }
+
+    dir('2장_도커_엔진_task') {
+        stage('Test') {
+            sh './gradlew test'
+        }
+
+        stage('Build') {
+            sh './gradlew clean assemble'
+            sh 'cp ./build/libs/demo.jar ./'
+        }
+    }
+
+    stage('Build Image') {
+        app = docker.build("hazxz/2-weekend", "./2장_도커_엔진_task")
+    }
+
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
+            app.push("${env.BUILD_ID}")
+            app.push("latest")
+        }
+    }
+
+    stage('Stop container') {
+        try {
+            sh 'docker stop 2-weekend-demo; docker rm 2-weekend-demo'
+        } catch (Exception e) {
+            echo 'container is not running'
+        }
+    }
+
+    stage('Start container') {
+        sh 'docker run -d --name 2-weekend-demo -p 9091:9091 --restart=always hazxz/2-weekend:latest'
+    }
+}
+
+```
+
+
+
+##### Dockerfile
+
+```groovy
+FROM openjdk:8-jre-alpine
+
+EXPOSE 9091
+
+ARG JAR_FILE=./build/libs/demo.jar
+
+ADD ${JAR_FILE} demo.jar
+
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://127.0.0.1:9091/ping || exit 1
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/demo.jar"]
+
+```
+
+
+
+
+
+![2주차_task_jenkins_pipeline_success](../book-contents/assets/2주차_task_jenkins_pipeline_success.png)
+
+
+
+![2주차_task_ping_success](../book-contents/assets/2주차_task_ping_success.png)
