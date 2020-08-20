@@ -13,6 +13,13 @@ Vagrant.configure("2") do |config|
         v.memory = 2048
         v.cpus = 2
     end
+    master.vm.provision "shell", inline: <<-SHELL
+        yum install kubeadm -y
+        yum install kubectl -y
+        yum install kubernetes-cni -y
+    SHELL
+    master.vm.provision :docker,
+    	images: ["ubuntu:14.04"]
   end
   config.vm.define "kube-worker1" do |worker|
     worker.vm.hostname = "kube-worker1"
@@ -21,6 +28,13 @@ Vagrant.configure("2") do |config|
         v.memory = 2048
         v.cpus = 2
     end
+    worker.vm.provision "shell", inline: <<-SHELL
+        yum install kubeadm -y
+        yum install kubectl -y
+        yum install kubernetes-cni -y
+    SHELL
+    worker.vm.provision :docker,
+    	images: ["ubuntu:14.04"]
   end
   config.vm.define "kube-worker2" do |worker|
     worker.vm.hostname = "kube-worker2"
@@ -29,6 +43,13 @@ Vagrant.configure("2") do |config|
         v.memory = 2048
         v.cpus = 2
     end
+    worker.vm.provision "shell", inline: <<-SHELL
+        yum install kubeadm -y
+        yum install kubectl -y
+        yum install kubernetes-cni -y
+    SHELL
+    worker.vm.provision :docker,
+    	images: ["ubuntu:14.04"]
   end
   config.vm.define "kube-worker3" do |worker|
     worker.vm.hostname = "kube-worker3"
@@ -37,6 +58,13 @@ Vagrant.configure("2") do |config|
         v.memory = 2048
         v.cpus = 2
     end
+    worker.vm.provision "shell", inline: <<-SHELL
+        yum install kubeadm -y
+        yum install kubectl -y
+        yum install kubernetes-cni -y
+    SHELL
+    worker.vm.provision :docker,
+    	images: ["ubuntu:14.04"]
   end
 end
 
